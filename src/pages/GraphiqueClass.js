@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Chart} from 'react-charts'
 import chartChart from '../init/initchart';
+import initialTemp from '../init/initialTemp';
 
 class GraphiqueClass extends Component {
 
@@ -14,9 +15,13 @@ class GraphiqueClass extends Component {
             },
         ],
         axes : [
-            { primary: true, type: 'linear', position: 'bottom' },
+            { primary: true, type: 'ordinal', position: 'bottom' },
             { type: 'linear', position: 'left' },
           ],
+
+        series : {
+            type: 'area'
+          },
           
     }
 
@@ -25,12 +30,12 @@ class GraphiqueClass extends Component {
         return (
             <div style={{
                 height: '400px',
-                width: '400px',
+                width: '1400px',
                 padding: '20px',
             }}>
        
 
-    <Chart data={this.state.data} axes={this.state.axes} />
+    <Chart data={this.state.data} series={this.state.series}  axes={this.state.axes} />
   </div>
         );
     }
