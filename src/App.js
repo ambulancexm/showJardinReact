@@ -1,25 +1,50 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Footer from './components/Footer';
+import Title from './components/Title';
+import ToDoList from './components/ToDoList';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import AddTask from './components/AddTask';
+import initialData from './init/initialData';
+import Connexion from './pages/Connexion';
+import Graphique from './pages/Graphique';
+import GraphiqueClass from './pages/GraphiqueClass';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  state ={
+    tasks : initialData,
+  }
+
+  onToggleCompleted =(taskid) =>{
+    let taskToUpdate = this.state.tasks.find(task => task.id === taskid)
+      taskToUpdate.completed = !taskToUpdate.completed
+   
+      this.setState(prevState => {
+        prevState.tasks.map(task =>{
+          return task.id === taskid ? taskToUpdate : task
+        })
+      }
+    )
+  }
+
+  render() {
+    return (
+      <section className="App">
+        <Title/>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/add-task" component={AddTask}/>
+            <Route path="/connexion" component={Connexion}/>
+            <Route path="/chart" component={Graphique}/>
+            <Route path="/chart2" component={GraphiqueClass}/>
+            <Route path="/:filter?" render={(props) => <ToDoList {...props} tasks={initialData} onToggleCompleted={this.onToggleCompleted}/>}/>
+          </Switch>
+          <Footer/>
+        </BrowserRouter>
+      </section>
+    );
+  }
 }
 
 export default App;
